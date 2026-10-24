@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class RenderWeepingAngel extends RenderLiving<EntityWeepingAngel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(VintageAngels.MOD_ID, "textures/entity/weeping_angel.png");
+    private static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation(VintageAngels.MOD_ID, "textures/entity/weeping_angel_angry.png");
 
     public RenderWeepingAngel(RenderManager renderManager) {
         super(renderManager, new ModelWeepingAngel(), 0.5F);
@@ -20,6 +21,10 @@ public class RenderWeepingAngel extends RenderLiving<EntityWeepingAngel> {
 
     @Override
     protected @Nullable ResourceLocation getEntityTexture(@NotNull EntityWeepingAngel entity) {
+        if (entity.getAngry()) {
+            return TEXTURE_ANGRY;
+        }
+
         return TEXTURE;
     }
 

@@ -4,6 +4,7 @@ import mod.emt.vintageangels.VintageAngels;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -49,5 +50,12 @@ public class VARegistry {
             ModelResourceLocation loc = new ModelResourceLocation(Objects.requireNonNull(item.getRegistryName()), "normal");
             ModelLoader.setCustomModelResourceLocation(item, 0, loc);
         });*/
+    }
+
+    @SubscribeEvent
+    public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
+        for (VASoundEvents mcSound : VASoundEvents.values()) {
+            event.getRegistry().register(mcSound.getSoundEvent());
+        }
     }
 }
