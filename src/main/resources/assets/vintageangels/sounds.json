@@ -1,0 +1,25 @@
+{
+  "entity.weeping_angel.crumble": {
+    "sounds": [
+      "vintageangels:entity/weeping_angel/crumble"
+    ]
+  },
+  "entity.weeping_angel.light": {
+    "sounds": [
+      "vintageangels:entity/weeping_angel/light"
+    ]
+  },
+  "entity.weeping_angel.move": {
+    "sounds": [
+      "vintageangels:entity/weeping_angel/move1",
+      "vintageangels:entity/weeping_angel/move2",
+      "vintageangels:entity/weeping_angel/move3",
+      "vintageangels:entity/weeping_angel/move4"
+    ]
+  },
+  "entity.weeping_angel.teleport_activate": {
+    "sounds": [
+      "vintageangels:entity/weeping_angel/teleport_activate"
+    ]
+  }
+}

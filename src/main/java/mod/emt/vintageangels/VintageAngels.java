@@ -1,5 +1,6 @@
 package mod.emt.vintageangels;
 
+import mod.emt.vintageangels.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -11,7 +12,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
         name = VintageAngels.MOD_NAME,
         version = VintageAngels.MOD_VERSION
 )
-public class MCommodities {
+public class VintageAngels {
     public static final String MOD_ID = Tags.MOD_ID;
     public static final String MOD_NAME = "Vintage Angels";
     public static final String MOD_VERSION = Tags.VERSION;
