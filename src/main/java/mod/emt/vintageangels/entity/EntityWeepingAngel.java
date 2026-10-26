@@ -467,21 +467,21 @@ public class EntityWeepingAngel extends EntityMob {
                 motionX = 0.0D;
                 motionZ = 0.0D;
                 startedMoving = false;
-                setAngry(distance <= 25.0D);
                 return;
             }
+
+            setAngry(distance <= 25.0D);
 
             if (!startedMoving) {
                 playStalkingSound();
                 startedMoving = true;
             }
 
-            setAngry(distance <= 25.0D);
             getNavigator().tryMoveToEntityLiving(target, 1.0D);
 
             if (distance > 25.0D && --armMovementCooldown <= 0) {
                 setArmMovement(!getArmMovement());
-                armMovementCooldown = 20 + rand.nextInt(20);
+                armMovementCooldown = 10 + rand.nextInt(15);
             }
 
             if (distance <= 4.0D) {
