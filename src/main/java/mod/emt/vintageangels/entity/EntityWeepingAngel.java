@@ -3,6 +3,8 @@ package mod.emt.vintageangels.entity;
 
 import mod.emt.vintageangels.init.VASoundEvents;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -20,11 +22,13 @@ import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -67,6 +71,23 @@ public class EntityWeepingAngel extends EntityMob {
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(80.0D);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
         this.getEntityAttribute(SWIM_SPEED).setBaseValue(2.0D);
+    }
+
+    @Override
+    public boolean attackEntityAsMob(@NotNull Entity entity) {
+        if (!super.attackEntityAsMob(entity)) {
+            return false;
+        }
+
+        float localDifficulty = this.world.getDifficultyForLocation(this.getPosition()).getAdditionalDifficulty();
+        if (this.isEntityAlive() && entity instanceof EntityLivingBase) {
+            double teleportChance = 0.5D + (localDifficulty / 10.0F);
+            if (this.rand.nextFloat() <= (float) Math.min(teleportChance, 1.0F)) {
+                teleportEntity(entity.world, entity, true, (float) 64.0D);
+            }
+        }
+
+        return true;
     }
 
     @Override
@@ -152,6 +173,74 @@ public class EntityWeepingAngel extends EntityMob {
     @Override
     public boolean isPotionApplicable(@NotNull PotionEffect effect) {
         return false;
+    }
+
+    public static void teleportEntity(@NotNull World world, @NotNull Entity entity, boolean dropToGround, float range) {
+        if (entity instanceof FakePlayer) {
+            return;
+        }
+
+        double origX = entity.posX, origY = MathHelper.clamp(entity.posY, 1, 255), origZ = entity.posZ;
+
+        for (int i = 0; i < 15; i++) {
+            double targetX = origX + world.rand.nextGaussian() * range;
+            double targetY = -1;
+
+            while (targetY < 1.1) {
+                targetY = origY + world.rand.nextGaussian() * (range / 2);
+            }
+
+            double targetZ = origZ + world.rand.nextGaussian() * range;
+
+            if (dropToGround) {
+                targetY = MathHelper.floor(targetY) + .05;
+                while (targetY >= 2f && !(hasGround(world, targetX, targetY, targetZ) && isClear(world, entity, targetX, targetY, targetZ))) {
+                    targetY -= 1f;
+                }
+            }
+
+            if (targetY >= 2f && isClear(world, entity, targetX, targetY, targetZ) && doTeleport(world, entity, targetX, targetY, targetZ)) {
+                world.playSound(null, origX, origY, origZ, VASoundEvents.ENTITY_WEEPING_ANGEL_TELEPORT_ACTIVATE.getSoundEvent(), SoundCategory.NEUTRAL, 0.6F, 1.0F);
+                world.playSound(null, targetX, targetY, targetZ, VASoundEvents.ENTITY_WEEPING_ANGEL_TELEPORT_ACTIVATE.getSoundEvent(), SoundCategory.NEUTRAL, 0.6F, 1.0F);
+                entity.timeUntilPortal = 5;
+                return;
+            }
+        }
+    }
+
+    private static boolean isClear(@NotNull World world, @NotNull Entity entity, double targetX, double targetY, double targetZ) {
+        double origX = entity.posX, origY = entity.posY, origZ = entity.posZ;
+        try {
+            entity.setPosition(targetX, targetY, targetZ);
+            return world.checkNoEntityCollision(entity.getEntityBoundingBox(), entity) && world.getCollisionBoxes(entity, entity.getEntityBoundingBox()).isEmpty() && !world.containsAnyLiquid(entity.getEntityBoundingBox());
+        } finally {
+            entity.setPosition(origX, origY, origZ);
+        }
+    }
+
+    private static boolean hasGround(@NotNull World world, double targetX, double targetY, double targetZ) {
+        int xInt = MathHelper.floor(targetX);
+        int yInt = MathHelper.floor(targetY);
+        int zInt = MathHelper.floor(targetZ);
+        return yInt > 1 && world.getBlockState(new BlockPos(xInt, yInt - 1, zInt)).getMaterial().blocksMovement();
+    }
+
+
+    private static boolean doTeleport(@NotNull World world, @NotNull Entity entity, double targetX, double targetY, double targetZ) {
+        if (entity.isRiding()) {
+            entity.dismountRidingEntity();
+        }
+
+        if (entity.isBeingRidden()) {
+            entity.removePassengers();
+        }
+
+        if (entity instanceof EntityPlayer && !world.isRemote) {
+            Minecraft.getMinecraft().player.timeInPortal = 1.0F;
+        }
+
+        entity.setPositionAndRotation(targetX, targetY, targetZ, entity.rotationYaw, entity.rotationPitch);
+        return true;
     }
 
     private boolean isInFieldOfVision(EntityLivingBase player, float yawLimit, float pitchLimit) {

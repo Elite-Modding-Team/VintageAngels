@@ -8,7 +8,7 @@ public enum  VASoundEvents {
     ENTITY_WEEPING_ANGEL_CRUMBLE("entity.weeping_angel.crumble"),
     ENTITY_WEEPING_ANGEL_LIGHT("entity.weeping_angel.light"),
     ENTITY_WEEPING_ANGEL_MOVE("entity.weeping_angel.move"),
-    ENTITY_WEEPING_ANGEL_TELEPORT_ACTIVATE("entity.weeping_angel.telport_activate");
+    ENTITY_WEEPING_ANGEL_TELEPORT_ACTIVATE("entity.weeping_angel.teleport_activate");
 
     private final SoundEvent soundEvent;
 
