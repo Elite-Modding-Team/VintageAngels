@@ -154,12 +154,12 @@ public class EntityWeepingAngel extends EntityMob {
 
     @Override
     protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
-        return SoundEvents.BLOCK_STONE_HIT;
+        return SoundEvents.BLOCK_STONE_BREAK;
     }
 
     @Override
     protected @NotNull SoundEvent getDeathSound() {
-        return SoundEvents.BLOCK_STONE_BREAK;
+        return VASoundEvents.ENTITY_WEEPING_ANGEL_CRUMBLE.getSoundEvent();
     }
 
     @Override
