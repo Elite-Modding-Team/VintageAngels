@@ -9,12 +9,16 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.Path;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.PathPoint;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -37,6 +41,8 @@ public class EntityWeepingAngel extends EntityMob {
         super(world);
         this.setSize(0.6F, 1.95F);
         this.isImmuneToFire = true;
+        this.stepHeight = 1.0F;
+        this.setPathPriority(PathNodeType.WATER, 8.0F);
     }
 
     @Override
@@ -58,7 +64,26 @@ public class EntityWeepingAngel extends EntityMob {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.6D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(80.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
+        this.getEntityAttribute(SWIM_SPEED).setBaseValue(2.0D);
+    }
+
+    @Override
+    public boolean attackEntityFrom(@NotNull DamageSource source, float amount) {
+        // Pickaxes (or other similar tools) will deal normal damage, otherwise damage dealt is reduced to only 25%
+        if (source.getImmediateSource() instanceof EntityLivingBase) {
+            EntityLivingBase entity = (EntityLivingBase) source.getImmediateSource();
+            ItemStack heldItem = entity.getHeldItemMainhand();
+
+            // TODO: Add a config list for additional classes that can work here
+            // Surprisingly some mods don't extend ItemPickaxe...
+            if (heldItem.getItem().canHarvestBlock(Blocks.STONE.getDefaultState())) {
+                return super.attackEntityFrom(source, amount);
+            }
+        }
+
+        return super.attackEntityFrom(source, amount * 0.25F);
     }
 
     @Override
@@ -87,6 +112,22 @@ public class EntityWeepingAngel extends EntityMob {
     }
 
     @Override
+    public boolean canBePushed() {
+        return false;
+    }
+
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
+    }
+
+
+    @Override
+    public boolean isPushedByWater() {
+        return false;
+    }
+
+    @Override
     public void fall(float distance, float damageMultiplier) {
     }
 
@@ -106,6 +147,11 @@ public class EntityWeepingAngel extends EntityMob {
 
     private void playStalkingSound() {
         this.world.playSound(null, this.getPosition(), VASoundEvents.ENTITY_WEEPING_ANGEL_MOVE.getSoundEvent(), this.getSoundCategory(), 0.5F, 1.0F);
+    }
+
+    @Override
+    public boolean isPotionApplicable(@NotNull PotionEffect effect) {
+        return false;
     }
 
     private boolean isInFieldOfVision(EntityLivingBase player, float yawLimit, float pitchLimit) {
@@ -323,8 +369,7 @@ public class EntityWeepingAngel extends EntityMob {
             }
 
             unreachableTicks = 0;
-            getNavigator().tryMoveToEntityLiving(target, 1.0D);
-            faceEntity(target, 100.0F, 100.0F);
+            faceEntity(target, 30.0F, 30.0F);
 
             boolean watched = canAngelBeSeenMultiplayer();
 
