@@ -17,11 +17,11 @@ public class VAConfig {
     public static class WeepingAngel {
         @Config.Name("Armor")
         @Config.Comment("The amount of armor the Weeping Angel has")
-        public double armor = 10.0;
+        public double armor = 8.0;
 
         @Config.Name("Attack Damage")
         @Config.Comment("The attack damage of the Weeping Angel")
-        public double attackDamage = 14.0;
+        public double attackDamage = 11.0;
 
         @Config.Name("Follow Range")
         @Config.Comment("The follow range of the Weeping Angel")
