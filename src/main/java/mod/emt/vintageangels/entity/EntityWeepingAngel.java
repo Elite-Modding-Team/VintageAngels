@@ -1,6 +1,7 @@
 
 package mod.emt.vintageangels.entity;
 
+import mod.emt.vintageangels.config.VAConfig;
 import mod.emt.vintageangels.init.VASoundEvents;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -11,6 +12,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -45,7 +47,7 @@ public class EntityWeepingAngel extends EntityMob {
         super(world);
         this.setSize(0.6F, 1.95F);
         this.isImmuneToFire = true;
-        this.stepHeight = 1.0F;
+        this.stepHeight = (float) VAConfig.WEEPING_ANGEL.stepHeight;
         this.setPathPriority(PathNodeType.WATER, 8.0F);
     }
 
@@ -65,12 +67,13 @@ public class EntityWeepingAngel extends EntityMob {
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.6D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(80.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
-        this.getEntityAttribute(SWIM_SPEED).setBaseValue(2.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(VAConfig.WEEPING_ANGEL.armor);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(VAConfig.WEEPING_ANGEL.attackDamage);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(VAConfig.WEEPING_ANGEL.followRange);
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(VAConfig.WEEPING_ANGEL.knockbackResistance);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(VAConfig.WEEPING_ANGEL.maxHealth);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(VAConfig.WEEPING_ANGEL.movementSpeed);
+        this.getEntityAttribute(SWIM_SPEED).setBaseValue(VAConfig.WEEPING_ANGEL.swimSpeed);
     }
 
     @Override
@@ -79,11 +82,10 @@ public class EntityWeepingAngel extends EntityMob {
             return false;
         }
 
-        float localDifficulty = this.world.getDifficultyForLocation(this.getPosition()).getAdditionalDifficulty();
         if (this.isEntityAlive() && entity instanceof EntityLivingBase) {
-            double teleportChance = 0.5D + (localDifficulty / 10.0F);
+            double teleportChance = VAConfig.WEEPING_ANGEL.teleportChanceTarget;
             if (this.rand.nextFloat() <= (float) Math.min(teleportChance, 1.0F)) {
-                teleportEntity(entity.world, entity, true, (float) 64.0D);
+                teleportEntity(entity.world, entity, true, (float) VAConfig.WEEPING_ANGEL.teleportRangeTarget);
             }
         }
 
@@ -202,6 +204,8 @@ public class EntityWeepingAngel extends EntityMob {
             if (targetY >= 2f && isClear(world, entity, targetX, targetY, targetZ) && doTeleport(world, entity, targetX, targetY, targetZ)) {
                 world.playSound(null, origX, origY, origZ, VASoundEvents.ENTITY_WEEPING_ANGEL_TELEPORT_ACTIVATE.getSoundEvent(), SoundCategory.NEUTRAL, 0.6F, 1.0F);
                 world.playSound(null, targetX, targetY, targetZ, VASoundEvents.ENTITY_WEEPING_ANGEL_TELEPORT_ACTIVATE.getSoundEvent(), SoundCategory.NEUTRAL, 0.6F, 1.0F);
+                world.playSound(null, origX, origY, origZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                world.playSound(null, targetX, targetY, targetZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
                 entity.timeUntilPortal = 5;
                 return;
             }
@@ -235,11 +239,18 @@ public class EntityWeepingAngel extends EntityMob {
             entity.removePassengers();
         }
 
-        if (entity instanceof EntityPlayer && !world.isRemote) {
-            Minecraft.getMinecraft().player.timeInPortal = 1.0F;
+        if (entity instanceof EntityPlayerMP) {
+            EntityPlayerMP player = (EntityPlayerMP) entity;
+
+            if (!world.isRemote) {
+                Minecraft.getMinecraft().player.timeInPortal = 1.0F;
+            }
+
+            player.connection.setPlayerLocation(targetX, targetY, targetZ, entity.rotationYaw, entity.rotationPitch);
+        } else {
+            entity.setPositionAndRotation(targetX, targetY, targetZ, entity.rotationYaw, entity.rotationPitch);
         }
 
-        entity.setPositionAndRotation(targetX, targetY, targetZ, entity.rotationYaw, entity.rotationPitch);
         return true;
     }
 
@@ -485,12 +496,13 @@ public class EntityWeepingAngel extends EntityMob {
             }
 
             if (distance <= 4.0D) {
-                if (attackCooldown-- <= 0) {
-                    attackCooldown = 20;
-                    attackEntityAsMob(target);
+                if (attackCooldown <= 0) {
+                    if (attackEntityAsMob(target)) {
+                        attackCooldown = 20;
+                    }
+                } else {
+                    attackCooldown--;
                 }
-            } else {
-                attackCooldown = 0;
             }
         }
     }

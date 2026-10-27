@@ -2,6 +2,7 @@ package mod.emt.vintageangels.init;
 
 import mod.emt.vintageangels.VintageAngels;
 import mod.emt.vintageangels.client.render.RenderWeepingAngel;
+import mod.emt.vintageangels.config.VAConfig;
 import mod.emt.vintageangels.entity.EntityWeepingAngel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -45,6 +46,7 @@ public class VAEntities {
     }
 
     public static void registerEntitySpawns() {
+        EntityRegistry.addSpawn(EntityWeepingAngel.class, VAConfig.WEEPING_ANGEL.spawnWeight, VAConfig.WEEPING_ANGEL.spawnMin, VAConfig.WEEPING_ANGEL.spawnMax, EnumCreatureType.CREATURE, getMonsterEntityBiomes(EntityZombie.class));
         EntitySpawnPlacementRegistry.setPlacementType(EntityWeepingAngel.class, EntityLiving.SpawnPlacementType.ON_GROUND);
     }
 
