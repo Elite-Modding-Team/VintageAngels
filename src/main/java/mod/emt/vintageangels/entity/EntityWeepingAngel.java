@@ -84,10 +84,15 @@ public class EntityWeepingAngel extends EntityMob {
             @Override
             public void updateRenderAngles() {
                 EntityWeepingAngel entity = EntityWeepingAngel.this;
-                entity.renderYawOffset = entity.rotationYaw;
-                entity.prevRenderYawOffset = entity.rotationYaw;
-                entity.rotationYawHead = entity.rotationYaw;
-                entity.prevRotationYawHead = entity.rotationYaw;
+                double d0 = entity.posX - entity.prevPosX;
+                double d1 = entity.posZ - entity.prevPosZ;
+
+                if (d0 * d0 + d1 * d1 > 2.5E-7D) {
+                    entity.renderYawOffset = entity.rotationYaw;
+                    entity.prevRenderYawOffset = entity.rotationYaw;
+                    entity.rotationYawHead = entity.rotationYaw;
+                    entity.prevRotationYawHead = entity.rotationYaw;
+                }
             }
         };
     }
