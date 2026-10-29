@@ -3,7 +3,7 @@
 
 ## Created for Halloween 2026! 🎃
 
-Vintage Angels is a 1.12.2 mod that adds mysterious stone angels that stalk you (using assets from the original Weeping Angels mod by a_dizzle).
+**Vintage Angels** is a 1.12.2 mod that adds mysterious stone angels that stalk you (using assets from the original **Weeping Angels** mod by a_dizzle).
 
 These angels will freeze in place when seen, but will rush towards a target as soon as no one is looking at them. They can also teleport their target around and must be hit with a pickaxe to take full damage.
 
