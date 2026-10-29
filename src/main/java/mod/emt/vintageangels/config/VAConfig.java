@@ -31,6 +31,10 @@ public class VAConfig {
         @Config.Comment("The follow range of the Weeping Angel")
         public double followRange = 80.0;
 
+        @Config.Name("Invincibility")
+        @Config.Comment("Makes the Weeping Angel completely immune to all damage (excluding void damage).")
+        public boolean invincibility = false;
+
         @Config.Name("Jumpscare Sound")
         @Config.Comment("Makes the Weeping Angel have a chance to play a jumpscare sound when damaging you")
         public boolean jumpscareSound = true;
@@ -53,11 +57,19 @@ public class VAConfig {
         @Config.RangeDouble(min = 0.0, max = 1.0)
         public double knockbackResistance = 1.0;
 
-        @Config.Name("Pickaxe Tool Class List")
+        @Config.Name("Pickaxe Tool Damage")
+        @Config.Comment({"Makes the Weeping Angel require a pickaxe to take full damage, otherwise it only takes 25% of damage.","Disabling this will make Weeping Angels take full damage from any tool."})
+        public boolean pickaxeToolDamage = true;
+
+        @Config.Name("Pickaxe Tool Damage Class List")
         @Config.Comment("List of classes (and anything that extends them) that count as a pickaxe against a Weeping Angel")
         public String[] pickaxeToolClasses = {
                 "slimeknights.tconstruct.tools.tools.Pickaxe"
         };
+
+        @Config.Name("Pickaxe Tool Damage Invincibility")
+        @Config.Comment("Makes the Weeping Angel completely immune to damage (excluding void damage) when not damaged by a pickaxe tool")
+        public boolean pickaxeToolDamageInvincibility = false;
 
         @Config.Name("Scan Radius: X")
         @Config.Comment("The scan radius of the Weeping Angel (X coordinate)")

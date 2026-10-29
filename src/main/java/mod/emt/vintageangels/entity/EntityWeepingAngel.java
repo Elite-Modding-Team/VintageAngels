@@ -129,13 +129,24 @@ public class EntityWeepingAngel extends EntityMob {
 
     @Override
     public boolean attackEntityFrom(@NotNull DamageSource source, float amount) {
+        if ((VAConfig.WEEPING_ANGEL.invincibility && source != DamageSource.OUT_OF_WORLD)) {
+            this.world.playSound(null, this.getPosition(), SoundEvents.BLOCK_ANVIL_PLACE, this.getSoundCategory(), 1.0F, ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) * 1.8F);
+            return false;
+        }
+
         // Pickaxes (or other similar tools) will deal normal damage, otherwise damage dealt is reduced to only 25%
         if (source.getImmediateSource() instanceof EntityLivingBase) {
             EntityLivingBase entity = (EntityLivingBase) source.getImmediateSource();
             ItemStack heldItem = entity.getHeldItemMainhand();
 
+            if (VAConfig.WEEPING_ANGEL.pickaxeToolDamageInvincibility && !(heldItem.getItem().canHarvestBlock(Blocks.STONE.getDefaultState())
+                    || ConfigHelper.isPickaxeToolAllowed(heldItem)) && source != DamageSource.OUT_OF_WORLD) {
+                this.world.playSound(null, this.getPosition(), SoundEvents.BLOCK_ANVIL_PLACE, this.getSoundCategory(), 1.0F, ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) * 1.8F);
+                return false;
+            }
+
             // Surprisingly some mods don't extend ItemPickaxe...
-            if (heldItem.getItem().canHarvestBlock(Blocks.STONE.getDefaultState()) || ConfigHelper.isPickaxeToolAllowed(heldItem)) {
+            if (!VAConfig.WEEPING_ANGEL.pickaxeToolDamage || (heldItem.getItem().canHarvestBlock(Blocks.STONE.getDefaultState()) || ConfigHelper.isPickaxeToolAllowed(heldItem))) {
                 return super.attackEntityFrom(source, amount);
             }
         }
@@ -333,7 +344,7 @@ public class EntityWeepingAngel extends EntityMob {
         return isInFieldOfVision(player, 70.0F, 65.0F);
     }
 
-    private boolean canAngelBeSeenMultiplayer() {
+    private boolean canAngelBeSeenByOthers() {
         if (isAngelInDarkness()) {
             return false;
         }
@@ -509,7 +520,7 @@ public class EntityWeepingAngel extends EntityMob {
             unreachableTicks = 0;
             faceEntity(target, 30.0F, 30.0F);
 
-            boolean watched = canAngelBeSeenMultiplayer();
+            boolean watched = canAngelBeSeenByOthers();
 
             if (watched) {
                 getNavigator().clearPath();
