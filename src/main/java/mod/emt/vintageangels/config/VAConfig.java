@@ -53,6 +53,12 @@ public class VAConfig {
         @Config.RangeDouble(min = 0.0, max = 1.0)
         public double knockbackResistance = 1.0;
 
+        @Config.Name("Pickaxe Tool Class List")
+        @Config.Comment("List of classes (and anything that extends them) that count as a pickaxe against a Weeping Angel")
+        public String[] pickaxeToolClasses = {
+                "slimeknights.tconstruct.tools.tools.Pickaxe"
+        };
+
         @Config.Name("Scan Radius: X")
         @Config.Comment("The scan radius of the Weeping Angel (X coordinate)")
         @Config.RangeInt(min = 0)

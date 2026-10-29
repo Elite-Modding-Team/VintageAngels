@@ -3,6 +3,7 @@ package mod.emt.vintageangels.entity;
 
 import mod.emt.vintageangels.config.VAConfig;
 import mod.emt.vintageangels.init.VASoundEvents;
+import mod.emt.vintageangels.util.ConfigHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -133,9 +134,8 @@ public class EntityWeepingAngel extends EntityMob {
             EntityLivingBase entity = (EntityLivingBase) source.getImmediateSource();
             ItemStack heldItem = entity.getHeldItemMainhand();
 
-            // TODO: Add a config list for additional classes that can work here
             // Surprisingly some mods don't extend ItemPickaxe...
-            if (heldItem.getItem().canHarvestBlock(Blocks.STONE.getDefaultState())) {
+            if (heldItem.getItem().canHarvestBlock(Blocks.STONE.getDefaultState()) || ConfigHelper.isPickaxeToolAllowed(heldItem)) {
                 return super.attackEntityFrom(source, amount);
             }
         }
