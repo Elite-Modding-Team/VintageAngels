@@ -249,7 +249,7 @@ public class EntityWeepingAngel extends EntityMob {
         if (entity instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) entity;
 
-            if (!world.isRemote) {
+            if (world.isRemote) {
                 Minecraft.getMinecraft().player.timeInPortal = 1.0F;
             }
 
