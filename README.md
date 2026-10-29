@@ -1,4 +1,6 @@
 # Vintage Angels
+![Angel Statues](docs/angel_statues.png)
+
 ## Created for Halloween 2026! 🎃
 
 Vintage Angels is a 1.12.2 mod that adds mysterious stone angels that stalk you (using assets from the original Weeping Angels mod by a_dizzle).
