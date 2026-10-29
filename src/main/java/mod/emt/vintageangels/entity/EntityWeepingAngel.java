@@ -84,6 +84,9 @@ public class EntityWeepingAngel extends EntityMob {
 
         if (this.isEntityAlive() && entity instanceof EntityLivingBase) {
             double teleportChance = VAConfig.WEEPING_ANGEL.teleportChanceTarget;
+            if (VAConfig.WEEPING_ANGEL.jumpscareSound && this.rand.nextFloat() <= (float) Math.min(VAConfig.WEEPING_ANGEL.jumpscareSoundChance, 1.0F)) {
+                this.playJumpscareSound();
+            }
             if (this.rand.nextFloat() <= (float) Math.min(teleportChance, 1.0F)) {
                 teleportEntity(entity.world, entity, true, (float) VAConfig.WEEPING_ANGEL.teleportRangeTarget);
             }
@@ -168,6 +171,10 @@ public class EntityWeepingAngel extends EntityMob {
     protected void playStepSound(@NotNull BlockPos pos, @NotNull Block block) {
     }
 
+    private void playJumpscareSound() {
+        this.world.playSound(null, this.getPosition(), SoundEvents.ENTITY_GHAST_HURT, this.getSoundCategory(), 2.0F, ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) * 1.8F);
+    }
+
     private void playStalkingSound() {
         this.world.playSound(null, this.getPosition(), VASoundEvents.ENTITY_WEEPING_ANGEL_MOVE.getSoundEvent(), this.getSoundCategory(), 0.5F, 1.0F);
     }
@@ -204,8 +211,8 @@ public class EntityWeepingAngel extends EntityMob {
             if (targetY >= 2f && isClear(world, entity, targetX, targetY, targetZ) && doTeleport(world, entity, targetX, targetY, targetZ)) {
                 world.playSound(null, origX, origY, origZ, VASoundEvents.ENTITY_WEEPING_ANGEL_TELEPORT_ACTIVATE.getSoundEvent(), SoundCategory.NEUTRAL, 0.6F, 1.0F);
                 world.playSound(null, targetX, targetY, targetZ, VASoundEvents.ENTITY_WEEPING_ANGEL_TELEPORT_ACTIVATE.getSoundEvent(), SoundCategory.NEUTRAL, 0.6F, 1.0F);
-                world.playSound(null, origX, origY, origZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
-                world.playSound(null, targetX, targetY, targetZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                world.playSound(null, origX, origY, origZ, VASoundEvents.ENTITY_WEEPING_ANGEL_TELEPORT_ACTIVATE.getSoundEvent(), SoundCategory.NEUTRAL, 0.8F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F) * 1.8F);
+                world.playSound(null, targetX, targetY, targetZ, VASoundEvents.ENTITY_WEEPING_ANGEL_TELEPORT_ACTIVATE.getSoundEvent(), SoundCategory.NEUTRAL, 0.8F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F) * 1.8F);
                 entity.timeUntilPortal = 5;
                 return;
             }
@@ -300,7 +307,7 @@ public class EntityWeepingAngel extends EntityMob {
             return false;
         }
 
-        List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, getEntityBoundingBox().grow(64.0D, 20.0D, 64.0D));
+        List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, getEntityBoundingBox().grow(VAConfig.WEEPING_ANGEL.scanRadiusX, VAConfig.WEEPING_ANGEL.scanRadiusY, VAConfig.WEEPING_ANGEL.scanRadiusZ));
 
         for (EntityPlayer player : players) {
             if (!player.isSpectator() && canAngelBeSeen(player)) {
@@ -328,7 +335,7 @@ public class EntityWeepingAngel extends EntityMob {
     }
 
     private boolean isValidStalkTarget(EntityPlayer player) {
-        return player != null && player.isEntityAlive() && !player.isSpectator() && !player.isCreative() && getDistanceSq(player) <= 64.0D * 64.0D;
+        return player != null && player.isEntityAlive() && !player.isSpectator() && !player.isCreative() && getDistanceSq(player) <= VAConfig.WEEPING_ANGEL.scanRadiusX * VAConfig.WEEPING_ANGEL.scanRadiusZ;
     }
 
 
@@ -384,7 +391,7 @@ public class EntityWeepingAngel extends EntityMob {
 
             setAttackTarget(null);
 
-            List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, getEntityBoundingBox().grow(64.0D, 20.0D, 64.0D));
+            List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, getEntityBoundingBox().grow(VAConfig.WEEPING_ANGEL.scanRadiusX, VAConfig.WEEPING_ANGEL.scanRadiusY, VAConfig.WEEPING_ANGEL.scanRadiusZ));
             EntityPlayer closest = null;
             double closestDistance = Double.MAX_VALUE;
 

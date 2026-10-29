@@ -27,6 +27,15 @@ public class VAConfig {
         @Config.Comment("The follow range of the Weeping Angel")
         public double followRange = 80.0;
 
+        @Config.Name("Jumpscare Sound")
+        @Config.Comment("Makes the Weeping Angel have a chance to play a jumpscare sound when damaging you")
+        public boolean jumpscareSound = true;
+
+        @Config.Name("Jumpscare Sound Chance")
+        @Config.Comment("The chance for the Weeping Angel to play a jumpscare sound")
+        @Config.RangeDouble(min = 0.0, max = 1.0)
+        public double jumpscareSoundChance = 0.1;
+
         @Config.Name("Max Health")
         @Config.Comment("The maximum health of the Weeping Angel")
         public double maxHealth = 40.0;
@@ -39,6 +48,21 @@ public class VAConfig {
         @Config.Comment("The knockback resistance (in percentage) of the Weeping Angel")
         @Config.RangeDouble(min = 0.0, max = 1.0)
         public double knockbackResistance = 1.0;
+
+        @Config.Name("Scan Radius: X")
+        @Config.Comment("The scan radius of the Weeping Angel (X coordinate)")
+        @Config.RangeInt(min = 0)
+        public double scanRadiusX = 64.0;
+
+        @Config.Name("Scan Radius: Y")
+        @Config.Comment("The scan radius of the Weeping Angel (Y coordinate)")
+        @Config.RangeInt(min = 0)
+        public double scanRadiusY = 20.0;
+
+        @Config.Name("Scan Radius: X")
+        @Config.Comment("The scan radius of the Weeping Angel (Z coordinate)")
+        @Config.RangeInt(min = 0)
+        public double scanRadiusZ = 64.0;
 
         @Config.Name("Spawn Max")
         @Config.Comment("The maximum spawn group size of the Weeping Angel")
