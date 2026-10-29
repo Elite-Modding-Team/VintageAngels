@@ -32,6 +32,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -263,14 +264,14 @@ public class EntityWeepingAngel extends EntityMob {
 
         if (entity instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP) entity;
-
-            if (world.isRemote) {
-                Minecraft.getMinecraft().player.timeInPortal = 1.0F;
-            }
-
             player.connection.setPlayerLocation(targetX, targetY, targetZ, entity.rotationYaw, entity.rotationPitch);
         } else {
             entity.setPositionAndRotation(targetX, targetY, targetZ, entity.rotationYaw, entity.rotationPitch);
+        }
+
+        // TODO: Refactor to packet
+        if (FMLLaunchHandler.side().isClient() && entity instanceof EntityPlayer) {
+            Minecraft.getMinecraft().player.timeInPortal = 1.0F;
         }
 
         return true;
