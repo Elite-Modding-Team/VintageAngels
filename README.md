@@ -19,6 +19,14 @@ The mod is very configurable, you can make angels completely invincible, or much
 #### Blocks
 - **Angel Statue:** Rare drop from Weeping Angels. Can be placed on the world and even rotated when right-clicking (or rotated the other way around while also sneaking).
 
+### 🔁 Mod Integration
+- **[Future Fireproof](https://www.curseforge.com/minecraft/mc-mods/future-fireproof)**
+    - Certain items will become fireproof and won't be destroyed by fire or lava (highly recommended!).
+- **[Just Enough Resources (JER)](https://www.curseforge.com/minecraft/mc-mods/just-enough-resources-jer)**
+    - Support added for the Weeping Angel.
+- **[Thaumcraft](https://www.curseforge.com/minecraft/mc-mods/thaumcraft)**
+    - All content added by Vintage Angels will have aspects.
+
 ---
 
 ### 🙏 Special Thanks

@@ -52,6 +52,7 @@ public class EntityWeepingAngel extends EntityMob {
     public EntityWeepingAngel(World world) {
         super(world);
         this.setSize(0.6F, 1.95F);
+        this.experienceValue = 20;
         this.isImmuneToFire = true;
         this.stepHeight = (float) VAConfig.WEEPING_ANGEL.stepHeight;
         this.setPathPriority(PathNodeType.WATER, 8.0F);

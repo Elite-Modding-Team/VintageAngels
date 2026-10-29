@@ -21,11 +21,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import net.minecraftforge.fml.common.Optional;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
 @SuppressWarnings("deprecation")
+@Optional.Interface(modid = "futurefireproof", iface = "com.invadermonky.futurefireproof.api.IFireproofBlock", striprefs = true)
 public class BlockAngelStatue extends Block {
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D);
 

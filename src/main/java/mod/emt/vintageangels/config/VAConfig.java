@@ -10,9 +10,25 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Config.LangKey("cfg." + VintageAngels.MOD_ID)
 @Config(modid = VintageAngels.MOD_ID, name = "VintageAngels")
 public class VAConfig {
+    @Config.LangKey("config.vintageangels.mod_integration")
+    @Config.Comment("Mod Integration settings")
+    public static final ModIntegration MOD_INTEGRATION = new ModIntegration();
+
     @Config.LangKey("config.vintageangels.weeping_angel")
     @Config.Comment("Weeping Angel settings")
     public static final WeepingAngel WEEPING_ANGEL = new WeepingAngel();
+
+    public static class ModIntegration {
+        @Config.RequiresMcRestart
+        @Config.Name("Just Enough Resources Integration")
+        @Config.Comment("Enables Just Enough Resources integration")
+        public boolean JERIntegration = true;
+
+        @Config.RequiresMcRestart
+        @Config.Name("Thaumcraft Integration")
+        @Config.Comment("Enables Thaumcraft aspect integration")
+        public boolean thaumcraftIntegration = true;
+    }
 
     public static class WeepingAngel {
         @Config.Name("Alternate Name")
