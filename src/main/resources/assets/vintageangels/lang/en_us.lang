@@ -3,6 +3,7 @@ tile.vintageangels:angel_statue.name=Angel Statue
 
 # Entities
 entity.vintageangels.weeping_angel.name=Weeping Angel
+entity.vintageangels.weeping_angel.alternate.name=Angel of Death
 
 # Config
 config.vintageangels.weeping_angel=Weeping Angel settings

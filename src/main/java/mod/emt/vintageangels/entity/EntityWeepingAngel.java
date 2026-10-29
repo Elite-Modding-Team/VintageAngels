@@ -5,10 +5,8 @@ import mod.emt.vintageangels.config.VAConfig;
 import mod.emt.vintageangels.init.VASoundEvents;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityBodyHelper;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.monster.EntityMob;
@@ -33,6 +31,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -78,8 +78,18 @@ public class EntityWeepingAngel extends EntityMob {
         this.getEntityAttribute(SWIM_SPEED).setBaseValue(VAConfig.WEEPING_ANGEL.swimSpeed);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected EntityBodyHelper createBodyHelper() {
+    public @NotNull String getName() {
+        String entityString = EntityList.getEntityString(this);
+        if (!VAConfig.WEEPING_ANGEL.alternateName || entityString == null) return super.getName();
+        String translationKey = "entity." + entityString + ".alternate.name";
+        String translatedString = I18n.format(translationKey);
+        return !translatedString.equals(translationKey) ? translatedString : super.getName();
+    }
+
+    @Override
+    protected @NotNull EntityBodyHelper createBodyHelper() {
         return new EntityBodyHelper(this) {
             @Override
             public void updateRenderAngles() {

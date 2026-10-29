@@ -15,6 +15,10 @@ public class VAConfig {
     public static final WeepingAngel WEEPING_ANGEL = new WeepingAngel();
 
     public static class WeepingAngel {
+        @Config.Name("Alternate Name")
+        @Config.Comment("Enables an alternate name (Angel of Death) for the Weeping Angel")
+        public boolean alternateName = false;
+
         @Config.Name("Armor")
         @Config.Comment("The amount of armor the Weeping Angel has")
         public double armor = 8.0;
