@@ -148,6 +148,60 @@ public class ModelWeepingAngel extends ModelBase {
         leftleg.mirror = false;
     }
 
+    public void renderStatue(float scale) {
+        rightarm.rotateAngleX = -1.74533F;
+        rightarm.rotateAngleY = -0.55851F;
+        rightarm.rotateAngleZ = 0.0F;
+        leftarm.rotateAngleX = -1.74533F;
+        leftarm.rotateAngleY = 0.55851F;
+        leftarm.rotateAngleZ = 0.0F;
+
+        float angleX = (float) Math.toRadians(10.0D);
+        float angleY = (float) Math.toRadians(30.0D);
+        float angleZ = (float) Math.toRadians(5.0D);
+
+        rightwing1.rotateAngleX = angleX;
+        rightwing2.rotateAngleX = angleX;
+        rightwing3.rotateAngleX = angleX;
+        rightwing4.rotateAngleX = angleX;
+        leftwing1.rotateAngleX = angleX;
+        leftwing2.rotateAngleX = angleX;
+        leftwing3.rotateAngleX = angleX;
+        leftwing4.rotateAngleX = angleX;
+        rightwing1.rotateAngleY = -angleY;
+        rightwing2.rotateAngleY = -angleY;
+        rightwing3.rotateAngleY = -angleY;
+        rightwing4.rotateAngleY = -angleY;
+        leftwing1.rotateAngleY = angleY;
+        leftwing2.rotateAngleY = angleY;
+        leftwing3.rotateAngleY = angleY;
+        leftwing4.rotateAngleY = angleY;
+        rightwing1.rotateAngleZ = angleZ;
+        rightwing2.rotateAngleZ = angleZ;
+        rightwing3.rotateAngleZ = angleZ;
+        rightwing4.rotateAngleZ = angleZ;
+        leftwing1.rotateAngleZ = -angleZ;
+        leftwing2.rotateAngleZ = -angleZ;
+        leftwing3.rotateAngleZ = -angleZ;
+        leftwing4.rotateAngleZ = -angleZ;
+        leftfoot.render(scale);
+        rightfoot.render(scale);
+        leftwing1.render(scale);
+        leftwing2.render(scale);
+        leftwing3.render(scale);
+        leftwing4.render(scale);
+        rightwing1.render(scale);
+        rightwing2.render(scale);
+        rightwing3.render(scale);
+        rightwing4.render(scale);
+        head.render(scale);
+        body.render(scale);
+        rightarm.render(scale);
+        leftarm.render(scale);
+        rightleg.render(scale);
+        leftleg.render(scale);
+    }
+
     public void render(@NotNull Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
         leftfoot.render(scale);

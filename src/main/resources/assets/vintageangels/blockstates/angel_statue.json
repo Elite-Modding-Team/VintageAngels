@@ -1,0 +1,22 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cube_all",
+    "textures": {
+      "all": "minecraft:blocks/stone"
+    }
+  },
+  "variants": {
+    "half=lower": [{}],
+    "half=upper": [{}],
+    "inventory": [
+      {
+        "transform": "forge:default-item",
+        "model": "builtin/generated",
+        "textures": {
+          "layer0": "vintageangels:blocks/angel_statue"
+        }
+      }
+    ]
+  }
+}
