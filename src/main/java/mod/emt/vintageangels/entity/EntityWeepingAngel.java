@@ -2,6 +2,7 @@
 package mod.emt.vintageangels.entity;
 
 import mod.emt.vintageangels.config.VAConfig;
+import mod.emt.vintageangels.init.VALootTables;
 import mod.emt.vintageangels.init.VASoundEvents;
 import mod.emt.vintageangels.util.ConfigHelper;
 import net.minecraft.block.Block;
@@ -24,6 +25,7 @@ import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -36,6 +38,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntityWeepingAngel extends EntityMob {
@@ -219,6 +222,12 @@ public class EntityWeepingAngel extends EntityMob {
 
     private void playStalkingSound() {
         this.world.playSound(null, this.getPosition(), VASoundEvents.ENTITY_WEEPING_ANGEL_MOVE.getSoundEvent(), this.getSoundCategory(), 0.5F, 1.0F);
+    }
+
+    @Nullable
+    @Override
+    protected ResourceLocation getLootTable() {
+        return VALootTables.WEEPING_ANGEL;
     }
 
     @Override
