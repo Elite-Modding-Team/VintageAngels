@@ -6,6 +6,7 @@ import mod.emt.vintageangels.init.VASoundEvents;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityBodyHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -74,6 +75,20 @@ public class EntityWeepingAngel extends EntityMob {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(VAConfig.WEEPING_ANGEL.maxHealth);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(VAConfig.WEEPING_ANGEL.movementSpeed);
         this.getEntityAttribute(SWIM_SPEED).setBaseValue(VAConfig.WEEPING_ANGEL.swimSpeed);
+    }
+
+    @Override
+    protected EntityBodyHelper createBodyHelper() {
+        return new EntityBodyHelper(this) {
+            @Override
+            public void updateRenderAngles() {
+                EntityWeepingAngel entity = EntityWeepingAngel.this;
+                entity.renderYawOffset = entity.rotationYaw;
+                entity.prevRenderYawOffset = entity.rotationYaw;
+                entity.rotationYawHead = entity.rotationYaw;
+                entity.prevRotationYawHead = entity.rotationYaw;
+            }
+        };
     }
 
     @Override
