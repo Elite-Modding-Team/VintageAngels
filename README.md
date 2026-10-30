@@ -3,7 +3,7 @@
 
 ## Created for Halloween 2026! 🎃
 
-**Vintage Angels** is a 1.12.2 mod that adds mysterious stone angels that stalk you (using assets from the original **Weeping Angels** mod by a_dizzle).
+**Vintage Angels** is a small 1.12.2 mod that adds mysterious stone angels that stalk you (using assets from the original **Weeping Angels** mod by a_dizzle).
 
 These angels will freeze in place when seen, but will rush towards a target as soon as no one is looking at them. They can also teleport their target around and must be hit with a pickaxe to take full damage.
 
@@ -21,7 +21,7 @@ The mod is very configurable, you can make angels completely invincible, or much
 
 ### 🔁 Mod Integration
 - **[Future Fireproof](https://www.curseforge.com/minecraft/mc-mods/future-fireproof)**
-    - Certain items will become fireproof and won't be destroyed by fire or lava (highly recommended!).
+    - The Angel Statue will become fireproof and won't be destroyed by fire or lava (highly recommended!).
 - **[Just Enough Resources (JER)](https://www.curseforge.com/minecraft/mc-mods/just-enough-resources-jer)**
     - Support added for the Weeping Angel.
 - **[Thaumcraft](https://www.curseforge.com/minecraft/mc-mods/thaumcraft)**
