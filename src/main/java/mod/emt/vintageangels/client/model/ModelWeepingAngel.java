@@ -9,6 +9,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Calendar;
+
 @SideOnly(Side.CLIENT)
 public class ModelWeepingAngel extends ModelBase {
     ModelRenderer leftfoot;
@@ -30,6 +32,8 @@ public class ModelWeepingAngel extends ModelBase {
     private float angleX;
     private float angleY;
     private float angleZ;
+
+    private final boolean isAprilFools;
 
     public ModelWeepingAngel() {
         this.textureHeight = 32;
@@ -146,6 +150,11 @@ public class ModelWeepingAngel extends ModelBase {
         leftleg.rotateAngleY = 0.0F;
         leftleg.rotateAngleZ = 0.0F;
         leftleg.mirror = false;
+
+        Calendar calendar = Calendar.getInstance();
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        this.isAprilFools = month == 4 && day == 1; // April 1st
     }
 
     public void renderStatue(float scale) {
@@ -184,6 +193,11 @@ public class ModelWeepingAngel extends ModelBase {
         leftwing2.rotateAngleZ = -angleZ;
         leftwing3.rotateAngleZ = -angleZ;
         leftwing4.rotateAngleZ = -angleZ;
+
+        if (this.isAprilFools) {
+            assertDominance();
+        }
+
         leftfoot.render(scale);
         rightfoot.render(scale);
         leftwing1.render(scale);
@@ -297,6 +311,10 @@ public class ModelWeepingAngel extends ModelBase {
             leftarm.rotateAngleY = 0.55851F;
             leftarm.rotateAngleZ = 0.0F;
         }
+
+        if (this.isAprilFools) {
+            assertDominance();
+        }
     }
 
     private float toRadians(float f) {
@@ -305,5 +323,15 @@ public class ModelWeepingAngel extends ModelBase {
 
     private float toDegrees(float f) {
         return f * 57.29578F;
+    }
+
+    private void assertDominance() {
+        rightarm.rotateAngleX = 0.0F;
+        rightarm.rotateAngleY = 0.0F;
+        rightarm.rotateAngleZ = (float) Math.PI / 2.0F;
+
+        leftarm.rotateAngleX = 0.0F;
+        leftarm.rotateAngleY = 0.0F;
+        leftarm.rotateAngleZ = -(float) Math.PI / 2.0F;
     }
 }
